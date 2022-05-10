@@ -10,15 +10,17 @@ import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.BodyHandler;
+import io.vertx.ext.web.handler.LoggerHandler;
 import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class MainVertical extends AbstractVerticle {
     @Override
     public void start(Promise<Void> startPromise) throws Exception {
         Router router = Router.router(vertx);
         router.route("/").handler(context -> context.json(new TempResponse()));
         router.route("/get").handler(context -> context.response().end("get"));
-        router.route(HttpMethod.POST, "/post").handler(BodyHandler.create()).handler(context -> {
+        router.route(HttpMethod.POST, "/post").handler(LoggerHandler.create()).handler(BodyHandler.create()).handler(context -> {
             JsonObject bodyAsJson = context.getBodyAsJson();
             TempResponse tempResponse = bodyAsJson.mapTo(TempResponse.class);
             context.json(tempResponse);
