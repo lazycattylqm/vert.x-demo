@@ -9,13 +9,11 @@ public class MainVerticle extends AbstractVerticle {
     @Override
     public void start(Promise<Void> startPromise) throws Exception {
         Router router = Router.router(vertx);
-        router.route().handler(context->{
+        router.route().handler(context -> {
             context.json(new TempResponse());
         });
-        vertx.createHttpServer().requestHandler(router).listen(8888).onSuccess(server->{
-            System.out.println(
-                    "Http server started on port "+ server.actualPort()
-            );
+        vertx.createHttpServer().requestHandler(router).listen(8888).onSuccess(server -> {
+            System.out.println("Http server started on port " + server.actualPort());
         });
     }
 }
