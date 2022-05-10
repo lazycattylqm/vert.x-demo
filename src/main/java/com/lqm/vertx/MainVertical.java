@@ -5,7 +5,7 @@ import io.vertx.core.Promise;
 import io.vertx.ext.web.Router;
 import lombok.Data;
 
-public class MainVerticle extends AbstractVerticle {
+public class MainVertical extends AbstractVerticle {
     @Override
     public void start(Promise<Void> startPromise) throws Exception {
         Router router = Router.router(vertx);
