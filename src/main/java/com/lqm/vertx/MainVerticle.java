@@ -2,21 +2,32 @@ package com.lqm.vertx;
 
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
+import io.vertx.ext.web.Router;
+import lombok.Data;
 
 public class MainVerticle extends AbstractVerticle {
     @Override
     public void start(Promise<Void> startPromise) throws Exception {
-        vertx.createHttpServer().requestHandler(req -> {
-            req.response()
-                    .putHeader("content-type", "text/plain")
-                    .end("Hello from Vert.x!");
-        }).listen(8888, http -> {
-            if (http.succeeded()) {
-                startPromise.complete();
-                System.out.println("HTTP server started on port 8888");
-            } else {
-                startPromise.fail(http.cause());
-            }
+        Router router = Router.router(vertx);
+        router.route().handler(context->{
+            context.json(new TempResponse());
+        });
+        vertx.createHttpServer().requestHandler(router).listen(8888).onSuccess(server->{
+            System.out.println(
+                    "Http server started on port "+ server.actualPort()
+            );
         });
     }
+}
+
+@Data
+class TempResponse {
+    private String name;
+    private String address;
+
+    public TempResponse() {
+        name = "lqm";
+        address = "beijing";
+    }
+
 }
