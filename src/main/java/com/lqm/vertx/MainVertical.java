@@ -1,9 +1,9 @@
 package com.lqm.vertx;
 
+import com.lqm.vertx.model.vo.TempResponse;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
 import io.vertx.ext.web.Router;
-import lombok.Data;
 
 public class MainVertical extends AbstractVerticle {
     @Override
@@ -18,14 +18,3 @@ public class MainVertical extends AbstractVerticle {
     }
 }
 
-@Data
-class TempResponse {
-    private String name;
-    private String address;
-
-    public TempResponse() {
-        name = "lqm";
-        address = "beijing";
-    }
-
-}
