@@ -16,7 +16,7 @@ public class MainVertical extends AbstractVerticle {
     public void start(Promise<Void> startPromise) throws Exception {
         Router router = Router.router(vertx);
         router.route("/").handler(context -> context.json(new TempResponse()));
-        router.route("/get").handler(context -> context.response().end("get"));
+        router.route("/get/").handler(context -> context.response().end("get"));
         router.route(HttpMethod.POST, "/post").handler(LoggerHandler.create()).handler(BodyHandler.create()).handler(context -> {
             log.info("path");
             JsonObject bodyAsJson = context.getBodyAsJson();
