@@ -9,12 +9,9 @@ import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.BodyHandler;
 import io.vertx.ext.web.handler.LoggerHandler;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @Slf4j
 public class MainVertical extends AbstractVerticle {
-//    private static final Logger log = LoggerFactory.getLogger(MainVertical.class);
     @Override
     public void start(Promise<Void> startPromise) throws Exception {
         Router router = Router.router(vertx);
