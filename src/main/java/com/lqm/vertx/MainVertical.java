@@ -62,7 +62,7 @@ public class MainVertical extends AbstractVerticle {
         });
         router.route("/query/").handler(BodyHandler.create()).handler(context -> {
             Future<RowSet<Row>> execute = MysqlConfigUtil.getMySqlPool().query("select * from test_table").execute();
-            execute.map(rows -> {
+            execute.compose(rows -> {
                 List<TestTableModel> testTableModels = new ArrayList<>();
                 rows.forEach(row -> {
                     TestTableModel testTableModel = row.toJson().mapTo(TestTableModel.class);
@@ -70,7 +70,8 @@ public class MainVertical extends AbstractVerticle {
                 });
                 Future<List> future = Future.future(h -> h.complete(testTableModels));
                 return future;
-            }).map(testTableModels -> {
+            }).compose(testTableModels -> {
+                log.info(testTableModels.toString());
                 context.json(testTableModels);
                 return Future.succeededFuture();
             });
