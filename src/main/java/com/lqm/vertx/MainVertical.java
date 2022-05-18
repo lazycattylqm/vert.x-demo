@@ -2,8 +2,10 @@ package com.lqm.vertx;
 
 import com.lqm.vertx.model.vo.MySqlConfig;
 import com.lqm.vertx.model.vo.TempResponse;
+import com.lqm.vertx.model.vo.TestTableModel;
 import com.lqm.vertx.util.MysqlConfigUtil;
 import io.vertx.core.AbstractVerticle;
+import io.vertx.core.Future;
 import io.vertx.core.Promise;
 import io.vertx.core.file.FileSystem;
 import io.vertx.core.http.HttpMethod;
@@ -11,7 +13,13 @@ import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.BodyHandler;
 import io.vertx.ext.web.handler.LoggerHandler;
+import io.vertx.mysqlclient.MySQLPool;
+import io.vertx.sqlclient.Row;
+import io.vertx.sqlclient.RowSet;
 import lombok.extern.slf4j.Slf4j;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 public class MainVertical extends AbstractVerticle {
@@ -19,6 +27,8 @@ public class MainVertical extends AbstractVerticle {
     public void start(Promise<Void> startPromise) throws Exception {
         FileSystem fileSystem = vertx.fileSystem();
         MySqlConfig mySqlConfig = MysqlConfigUtil.getMySqlConfig();
+        MySQLPool mysqlPool = mySqlConfig.createMysqlPool(vertx);
+        MysqlConfigUtil.setPool(mysqlPool);
         Router router = Router.router(vertx);
         router.route("/").handler(context -> context.json(new TempResponse()));
         router.route("/get/").handler(context -> context.response().end("get"));
@@ -49,6 +59,22 @@ public class MainVertical extends AbstractVerticle {
                 });
         router.route("/download/").handler(context -> {
             context.response().sendFile("./uploads/png.png");
+        });
+        router.route("/query/").handler(BodyHandler.create()).handler(context -> {
+            Future<RowSet<Row>> execute = MysqlConfigUtil.getMySqlPool().query("select * from test_table").execute();
+            execute.map(rows -> {
+                List<TestTableModel> testTableModels = new ArrayList<>();
+                rows.forEach(row -> {
+                    TestTableModel testTableModel = row.toJson().mapTo(TestTableModel.class);
+                    testTableModels.add(testTableModel);
+                });
+                Future<List> future = Future.future(h -> h.complete(testTableModels));
+                return future;
+            }).map(testTableModels -> {
+                context.json(testTableModels);
+                return Future.succeededFuture();
+            });
+
         });
     }
 }
