@@ -17,7 +17,7 @@
     </Properties>
     <appenders>
         <Console name="CONSOLE" target="SYSTEM_OUT">
-            <PatternLayout pattern="${CONSOLE_LAYOUT}" />
+            <PatternLayout pattern="${CONSOLE_LAYOUT}"/>
         </Console>
         <RollingFile name="ERROR-FILE"
                      fileName="${LOG_PATH}/${APP_NAME}_error.log"
@@ -45,9 +45,9 @@
     </appenders>
     <loggers>
         <Root level="INFO" includeLocation="true">
-            <appender-ref ref="CONSOLE" />
-            <appender-ref ref="ERROR-FILE" />
-            <appender-ref ref="INFO-FILE" />
+            <appender-ref ref="CONSOLE"/>
+            <appender-ref ref="ERROR-FILE"/>
+            <appender-ref ref="INFO-FILE"/>
         </Root>
     </loggers>
 </configuration>

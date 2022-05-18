@@ -1,6 +1,8 @@
 package com.lqm.vertx;
 
+import com.lqm.vertx.model.vo.MySqlConfig;
 import com.lqm.vertx.model.vo.TempResponse;
+import com.lqm.vertx.util.MysqlConfigUtil;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
 import io.vertx.core.file.FileSystem;
@@ -16,6 +18,7 @@ public class MainVertical extends AbstractVerticle {
     @Override
     public void start(Promise<Void> startPromise) throws Exception {
         FileSystem fileSystem = vertx.fileSystem();
+        MySqlConfig mySqlConfig = MysqlConfigUtil.getMySqlConfig();
         Router router = Router.router(vertx);
         router.route("/").handler(context -> context.json(new TempResponse()));
         router.route("/get/").handler(context -> context.response().end("get"));
@@ -45,7 +48,7 @@ public class MainVertical extends AbstractVerticle {
                     context.json("ok");
                 });
         router.route("/download/").handler(context -> {
-           context.response().sendFile("./uploads/png.png");
+            context.response().sendFile("./uploads/png.png");
         });
     }
 }
