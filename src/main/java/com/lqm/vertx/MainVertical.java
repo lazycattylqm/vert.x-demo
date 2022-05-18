@@ -2,23 +2,14 @@ package com.lqm.vertx;
 
 import com.lqm.vertx.model.vo.TempResponse;
 import io.vertx.core.AbstractVerticle;
-import io.vertx.core.Future;
 import io.vertx.core.Promise;
-import io.vertx.core.buffer.Buffer;
 import io.vertx.core.file.FileSystem;
 import io.vertx.core.http.HttpMethod;
-import io.vertx.core.http.HttpServerFileUpload;
 import io.vertx.core.json.JsonObject;
-import io.vertx.ext.web.FileUpload;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.BodyHandler;
 import io.vertx.ext.web.handler.LoggerHandler;
-import io.vertx.ext.web.impl.FileUploadImpl;
 import lombok.extern.slf4j.Slf4j;
-
-import java.io.File;
-import java.nio.file.Path;
-import java.util.Set;
 
 @Slf4j
 public class MainVertical extends AbstractVerticle {
