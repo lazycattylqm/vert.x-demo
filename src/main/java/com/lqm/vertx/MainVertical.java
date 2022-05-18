@@ -40,9 +40,7 @@ public class MainVertical extends AbstractVerticle {
                     TempResponse tempResponse = bodyAsJson.mapTo(TempResponse.class);
                     context.json(tempResponse);
                 });
-        vertx.createHttpServer().requestHandler(router).listen(8888).onSuccess(server -> {
-            System.out.println("Http server started on port " + server.actualPort());
-        });
+
         router.route(HttpMethod.POST, "/upload/")
                 .handler(BodyHandler.create().setUploadsDirectory("./uploads"))
                 .handler(context -> {
@@ -75,6 +73,10 @@ public class MainVertical extends AbstractVerticle {
                 return Future.succeededFuture();
             });
 
+        });
+
+        vertx.createHttpServer().requestHandler(router).listen(8888).onSuccess(server -> {
+            System.out.println("Http server started on port " + server.actualPort());
         });
     }
 }
