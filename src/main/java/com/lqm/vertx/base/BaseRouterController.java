@@ -1,7 +1,6 @@
 package com.lqm.vertx.base;
 
 import com.lqm.vertx.model.vo.TempResponse;
-import io.vertx.core.Vertx;
 import io.vertx.ext.web.Router;
 
 public class BaseRouterController {
