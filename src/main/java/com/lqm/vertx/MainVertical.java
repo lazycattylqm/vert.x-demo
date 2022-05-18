@@ -1,5 +1,6 @@
 package com.lqm.vertx;
 
+import com.lqm.vertx.base.BaseRouterController;
 import com.lqm.vertx.model.vo.MySqlConfig;
 import com.lqm.vertx.model.vo.TempResponse;
 import com.lqm.vertx.model.vo.TestTableModel;
@@ -27,7 +28,8 @@ public class MainVertical extends AbstractVerticle {
     public void start(Promise<Void> startPromise) throws Exception {
         FileSystem fileSystem = vertx.fileSystem();
         Router router = Router.router(vertx);
-        router.route("/").handler(context -> context.json(new TempResponse()));
+        BaseRouterController.registerRouter(router);
+
         router.route("/get/").handler(context -> context.response().end("get"));
         router.route(HttpMethod.POST, "/post")
                 .handler(LoggerHandler.create())
