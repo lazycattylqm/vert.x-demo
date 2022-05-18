@@ -41,14 +41,15 @@ public class MainVertical extends AbstractVerticle {
             System.out.println("Http server started on port " + server.actualPort());
         });
         router.route(HttpMethod.POST, "/upload/")
-                .handler(
-                        BodyHandler.create()
-                                .setHandleFileUploads(true)
-                                .setUploadsDirectory("/Users/liqiming/Project/vertx_demo/vertx_demo/file_store"))
+                .handler(BodyHandler.create().setUploadsDirectory("./uploads"))
                 .handler(context -> {
-                    Set<FileUpload> fileUploads = context.fileUploads();
-                    fileUploads.forEach(fileUpload -> {
+                    context.fileUploads().forEach(fileUpload -> {
                         System.out.println(fileUpload.fileName());
+                        System.out.println(fileUpload.uploadedFileName());
+                        fileSystem.move(fileUpload.uploadedFileName(), "./uploads/" + fileUpload.fileName(), res -> {
+                            log.info("success");
+                        });
+                        fileSystem.delete(fileUpload.uploadedFileName());
                     });
                     context.json("ok");
                 });
