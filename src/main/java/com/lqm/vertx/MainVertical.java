@@ -44,6 +44,9 @@ public class MainVertical extends AbstractVerticle {
                     });
                     context.json("ok");
                 });
+        router.route("/download/").handler(context -> {
+           context.response().sendFile("./uploads/png.png");
+        });
     }
 }
 
