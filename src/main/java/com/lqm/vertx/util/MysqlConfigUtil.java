@@ -3,6 +3,7 @@ package com.lqm.vertx.util;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.lqm.vertx.model.vo.MySqlConfig;
+import io.vertx.core.Vertx;
 import io.vertx.mysqlclient.MySQLPool;
 
 import java.io.IOException;
@@ -23,6 +24,7 @@ public class MysqlConfigUtil {
 
     static {
         MY_SQL_CONFIG = MysqlConfigUtil.init();
+        MY_SQL_POOL = MY_SQL_CONFIG.createMysqlPool(Vertx.vertx());
     }
 
     public static MySqlConfig getMySqlConfig() {

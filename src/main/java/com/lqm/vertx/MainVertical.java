@@ -26,9 +26,6 @@ public class MainVertical extends AbstractVerticle {
     @Override
     public void start(Promise<Void> startPromise) throws Exception {
         FileSystem fileSystem = vertx.fileSystem();
-        MySqlConfig mySqlConfig = MysqlConfigUtil.getMySqlConfig();
-        MySQLPool mysqlPool = mySqlConfig.createMysqlPool(vertx);
-        MysqlConfigUtil.setPool(mysqlPool);
         Router router = Router.router(vertx);
         router.route("/").handler(context -> context.json(new TempResponse()));
         router.route("/get/").handler(context -> context.response().end("get"));
