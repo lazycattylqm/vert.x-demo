@@ -52,7 +52,8 @@ public class MongoConfig {
 
     private JsonObject mapToJsonConfig() {
         Map<String, Object> configMap =
-                Map.of("db_name", db, "host", host, "port", port, "username", username, "password", password);
+                Map.of("db_name", db, "host", host, "port", port, "username", username, "password", password,
+                        "useObjectId", true);
         JsonObject entries = new JsonObject(configMap);
         return entries;
     }
