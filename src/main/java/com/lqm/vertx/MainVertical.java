@@ -4,6 +4,8 @@ import com.lqm.vertx.base.BaseRouterController;
 import com.lqm.vertx.model.vo.MySqlConfig;
 import com.lqm.vertx.model.vo.TempResponse;
 import com.lqm.vertx.model.vo.TestTableModel;
+import com.lqm.vertx.mongo.config.MongoConfig;
+import com.lqm.vertx.mongo.controller.MongoRouter;
 import com.lqm.vertx.util.MysqlConfigUtil;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Future;
@@ -11,6 +13,7 @@ import io.vertx.core.Promise;
 import io.vertx.core.file.FileSystem;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.json.JsonObject;
+import io.vertx.ext.mongo.MongoClient;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.BodyHandler;
 import io.vertx.ext.web.handler.LoggerHandler;
@@ -29,7 +32,6 @@ public class MainVertical extends AbstractVerticle {
         FileSystem fileSystem = vertx.fileSystem();
         Router router = Router.router(vertx);
         BaseRouterController.registerRouter(router);
-
         router.route("/get/").handler(context -> context.response().end("get"));
         router.route(HttpMethod.POST, "/post")
                 .handler(LoggerHandler.create())
@@ -75,7 +77,7 @@ public class MainVertical extends AbstractVerticle {
 
         });
 
-        vertx.createHttpServer().requestHandler(router).listen(8888).onSuccess(server -> {
+        vertx.createHttpServer().requestHandler(router).requestHandler(MongoRouter.router(vertx)).listen(8888).onSuccess(server -> {
             System.out.println("Http server started on port " + server.actualPort());
         });
     }
