@@ -2,8 +2,10 @@ package com.lqm.vertx.mongo.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.lqm.vertx.mongo.common.MongoMapper;
 import com.lqm.vertx.mongo.config.MongoConfig;
 import com.lqm.vertx.mongo.model.MongoModel;
+import com.lqm.vertx.mongo.model.MongoModelDo;
 import com.lqm.vertx.mongo.repo.MongoRepo;
 import de.undercouch.bson4jackson.BsonFactory;
 import io.vertx.core.Vertx;
@@ -26,9 +28,9 @@ public class MongoRouter {
                 if (res.succeeded()) {
                     List<MongoModel> mongoModels = res.result().stream().map(json -> {
                         log.info("json: {}", json.encodePrettily());
-                        return json.mapTo(MongoModel.class);
+                        return json.mapTo(MongoModelDo.class);
 
-                    }).toList();
+                    }).map(MongoMapper.INSTANCE::toMongoModel).toList();
                     ctx.json(mongoModels);
                 } else {
                     res.cause().printStackTrace();
@@ -43,9 +45,25 @@ public class MongoRouter {
             new MongoRepo().insertNewOne(mongoModel, res->{
                 if (res.succeeded()) {
                     ctx.response().end("success");
+                } else {
+                    ctx.response().end("failed");
                 }
-                ctx.response().end("failed");
+
             });
+        });
+
+        router.post("/update/mongo/").handler(BodyHandler.create()).handler(ctx -> {
+            MongoModel mongoModel = ctx.getBodyAsJson().mapTo(MongoModel.class);
+            log.info("mongoModel: {}", mongoModel);
+            new MongoRepo().updateOne(mongoModel, res->{
+                if (res.succeeded()) {
+                    ctx.response().end("success");
+                } else {
+                    ctx.response().end("failed");
+                }
+
+            });
+
         });
         return router;
     }

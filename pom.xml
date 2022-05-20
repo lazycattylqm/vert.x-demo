@@ -23,6 +23,7 @@
 
         <main.verticle>com.example.starter.MainVerticle</main.verticle>
         <launcher.class>io.vertx.core.Launcher</launcher.class>
+        <org.mapstruct.version>1.4.2.Final</org.mapstruct.version>
     </properties>
 
     <dependencyManagement>
@@ -156,6 +157,19 @@
             <version>31.1-jre</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
+            <version>${org.mapstruct.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct-processor</artifactId>
+            <version>${org.mapstruct.version}</version>
+        </dependency>
+
+
     </dependencies>
 
     <build>
@@ -165,6 +179,14 @@
                 <version>${maven-compiler-plugin.version}</version>
                 <configuration>
                     <release>17</release>
+                    <!--<annotationProcessorPaths>
+                        <path>
+                            <groupId>org.mapstruct</groupId>
+                            <artifactId>mapstruct-processor</artifactId>
+                            <version>${org.mapstruct.version}</version>
+                        </path>
+                        &lt;!&ndash; other annotation processors &ndash;&gt;
+                    </annotationProcessorPaths>-->
                 </configuration>
             </plugin>
             <plugin>
