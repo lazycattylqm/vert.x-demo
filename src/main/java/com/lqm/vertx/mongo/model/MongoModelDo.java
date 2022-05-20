@@ -1,12 +1,11 @@
 package com.lqm.vertx.mongo.model;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
-import io.vertx.core.json.JsonObject;
 import lombok.Data;
 
 @Data
-public class MongoModel {
-
+public class MongoModelDo {
+    @JsonAlias({"_id"})
     private String id;
 
     private int age;
@@ -15,9 +14,5 @@ public class MongoModel {
 
     private String gender;
 
-
-    public JsonObject toJson() {
-        return JsonObject.mapFrom(this);
-    }
 
 }
