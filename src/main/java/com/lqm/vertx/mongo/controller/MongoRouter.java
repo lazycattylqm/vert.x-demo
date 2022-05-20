@@ -65,6 +65,18 @@ public class MongoRouter {
             });
 
         });
+
+        router.delete("/delete/mongo/").handler(BodyHandler.create()).handler(ctx -> {
+            MongoModel mongoModel = ctx.getBodyAsJson().mapTo(MongoModel.class);
+            log.info("mongoModel: {}", mongoModel);
+            new MongoRepo().deleteOnes(mongoModel, res->{
+                if (res.succeeded()) {
+                    ctx.response().end("success");
+                } else {
+                    ctx.response().end("failed");
+                }
+            });
+        });
         return router;
     }
 }

@@ -8,6 +8,7 @@ import com.lqm.vertx.mongo.model.MongoModelDo;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
 import io.vertx.core.json.JsonObject;
+import io.vertx.ext.mongo.MongoClientDeleteResult;
 import io.vertx.ext.mongo.MongoClientUpdateResult;
 
 public class MongoRepo {
@@ -23,5 +24,11 @@ public class MongoRepo {
         JsonObject queryJson = mongoModelDo.toQueryJson();
         JsonObject updateJson = mongoModelDo.toUpdateJson();
         MongoConfig.getClient().updateCollection("liqiming", queryJson, updateJson, handler);
+    }
+
+    public void deleteOnes(MongoModel model, Handler<AsyncResult<MongoClientDeleteResult>> handler) {
+        MongoModelDo mongoModelDo = MongoMapper.INSTANCE.toMongoModelDo(model);
+        JsonObject queryJson = mongoModelDo.toQueryJson();
+        MongoConfig.getClient().removeDocuments("liqiming", queryJson, handler);
     }
 }
